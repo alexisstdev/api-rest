@@ -1,56 +1,24 @@
-# README.md
+# Servidores CORS
 
-# CORS Servers Project
+## Descripción
 
-This project implements two HTTP servers using Bun and Fastify. 
+Proyecto con dos servidores HTTP usando Bun y Fastify (Servidor 1) y módulo HTTP (Servidor 2) para demostrar CORS:
 
-## Overview
+- **Servidor 1**: Puerto 3000 - Sirve HTML con botones para hacer fetch con y sin CORS
+- **Servidor 2**: Puerto 3001 - Responde con/sin headers CORS
 
-- **Server 1**: Listens on port 3000 and serves an HTML file that makes a JavaScript fetch request to Server 2.
-- **Server 2**: Listens on port 3001 and can return any response while enabling or disabling CORS headers.
+## Instalación
 
-## Getting Started
+```bash
+bun install
+```
 
-### Prerequisites
+## Ejecución
 
-- Bun
-- Node.js
-- TypeScript
+```bash
+bun dev-1
+```
 
-### Installation
-
-1. Clone the repository:
-   ```
-   git clone <repository-url>
-   cd cors-servers
-   ```
-
-2. Install dependencies:
-   ```
-   bun install
-   ```
-
-### Running the Servers
-
-- Start Server 1:
-  ```
-  bun src/server1/index.ts
-  ```
-
-- Start Server 2:
-  ```
-  bun src/server2/index.ts
-  ```
-
-### Accessing the Servers
-
-- Open your browser and navigate to `http://localhost:3000` to access Server 1.
-- Server 1 will make a fetch request to Server 2, which is running on `http://localhost:3001`.
-
-### CORS Configuration
-
-You can enable or disable CORS headers in Server 2 as needed.
-
-## License
-
-This project is licensed under the MIT License.
+```bash
+bun dev-2
+```
