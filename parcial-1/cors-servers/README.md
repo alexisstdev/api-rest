@@ -15,9 +15,13 @@ bun install
 
 ## Ejecución
 
+### Servidor 1
+
 ```bash
 bun dev-1
 ```
+
+### Servidor 2
 
 ```bash
 bun dev-2
