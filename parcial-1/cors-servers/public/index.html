@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS Demo</title>
+</head>
+<body>
+    <h1>CORS</h1>
+    
+    <button id="withCORS">Con CORS</button>
+    <button id="withoutCORS">Sin CORS</button>
+    
+    <pre id="response"></pre>
+
+    <script>
+        const responsePre = document.getElementById('response');
+
+        document.getElementById('withCORS').addEventListener('click', () => {
+            fetch('http://localhost:3001/data?cors=true')
+                .then(response => response.text())
+                .then(data => {
+                    responsePre.textContent = data;
+                })
+                .catch(error => {
+                    responsePre.textContent = `Error: ${error.message}`;
+                });
+        });
+
+        document.getElementById('withoutCORS').addEventListener('click', () => {
+            fetch('http://localhost:3001/data?cors=false')
+                .then(response => response.text())
+                .then(data => {
+                    responsePre.textContent = data;
+                })
+                .catch(error => {
+                    responsePre.textContent = `Error: ${error.message}`;
+                });
+        });
+    </script>
+</body>
+</html>
