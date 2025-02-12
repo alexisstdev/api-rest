@@ -38,6 +38,8 @@ app.post("/api/v1/body", limiterMiddleware, (req, res) => {
 app.post("/api/v1/xml", limiterMiddleware, (req, res) => {
 	const xmlData = req.body;
 
+	console.log(xmlData);
+
 	res.type("application/xml");
 	res.send(`<?xml version="1.0"?>
 					<response>
