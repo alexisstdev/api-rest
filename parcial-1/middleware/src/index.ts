@@ -1,6 +1,7 @@
 import express from "express";
 import { join } from "node:path";
 import rateLimit from "express-rate-limit";
+import xmlparser from "express-xml-bodyparser";
 
 const app = express();
 const PORT = 3003;
@@ -8,6 +9,7 @@ const PORT = 3003;
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(xmlparser());
 app.use(express.static(join(process.cwd(), "public")));
 
 const limiterMiddleware = rateLimit({
@@ -31,6 +33,17 @@ app.get("/api/v1/users/:id", limiterMiddleware, (req, res) => {
 app.post("/api/v1/body", limiterMiddleware, (req, res) => {
 	const data = req.body;
 	res.json({ message: "Body params", data });
+});
+
+app.post("/api/v1/xml", limiterMiddleware, (req, res) => {
+	const xmlData = req.body;
+
+	res.type("application/xml");
+	res.send(`<?xml version="1.0"?>
+					<response>
+							<message>XML received</message>
+							<data>${JSON.stringify(xmlData)}</data>
+					</response>`);
 });
 
 app.get("/", limiterMiddleware, (_, res) => {
