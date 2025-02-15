@@ -1,7 +1,20 @@
-import express from "express";
+import express, { type RequestHandler } from "express";
 import { join } from "node:path";
 import rateLimit from "express-rate-limit";
 import xmlparser from "express-xml-bodyparser";
+import multer from "multer";
+import { extname } from "node:path";
+
+const storage = multer.diskStorage({
+	destination: (_, __, cb) => {
+		cb(null, "uploads/");
+	},
+	filename: (_, file, cb) => {
+		cb(null, `${Date.now()}${extname(file.originalname)}`);
+	},
+});
+
+const upload = multer({ storage });
 
 const app = express();
 const PORT = 3003;
@@ -47,6 +60,29 @@ app.post("/api/v1/xml", limiterMiddleware, (req, res) => {
 							<data>${JSON.stringify(xmlData)}</data>
 					</response>`);
 });
+
+app.post("/api/v1/upload", [limiterMiddleware, upload.single("file")], ((
+	req,
+	res,
+) => {
+	const formData = req.body;
+	const file = req.file;
+
+	if (!file) {
+		return res.status(400).json({ error: "No file uploaded" });
+	}
+
+	res.json({
+		message: "Form received",
+		fields: formData,
+		file: {
+			filename: file.filename,
+			path: file.path,
+			mimetype: file.mimetype,
+			size: file.size,
+		},
+	});
+}) as RequestHandler);
 
 app.get("/", limiterMiddleware, (_, res) => {
 	res.status(200).sendFile(join(process.cwd(), "public", "index.html"));
