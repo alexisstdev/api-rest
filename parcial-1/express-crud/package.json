@@ -1,0 +1,25 @@
+{
+	"name": "cors-servers",
+	"version": "1.0.0",
+	"scripts": {
+		"dev": "bun --watch src/main.ts"
+	},
+	"dependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@prisma/client": "^6.4.0",
+		"bun": "1.2.2",
+		"cors": "^2.8.5",
+		"express": "4.21.2",
+		"express-rate-limit": "7.5.0",
+		"multer": "1.4.5-lts.1",
+		"prisma": "^6.4.0",
+		"zod": "^3.24.2"
+	},
+	"devDependencies": {
+		"@types/bun": "1.2.2",
+		"@types/cors": "^2.8.17",
+		"@types/express": "5.0.0",
+		"@types/multer": "1.4.12",
+		"typescript": "5.7.3"
+	}
+}
