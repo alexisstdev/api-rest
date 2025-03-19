@@ -1,12 +1,13 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 const envSchema = z.object({
 	CLIENT_URL: z.string().url(),
 	PORT: z.string().transform((port) => +port),
-	ENVIRONMENT: z.enum(["development", "production"]),
+	ENVIRONMENT: z.enum(['development', 'production']),
 	DATABASE: z.object({
 		DATABASE_URL: z.string().url(),
 	}),
+	JWT_SECRET: z.string().min(10),
 });
 
 const parsedEnv = envSchema.safeParse({
@@ -16,11 +17,12 @@ const parsedEnv = envSchema.safeParse({
 	DATABASE: {
 		DATABASE_URL: process.env.DATABASE_URL,
 	},
+	JWT_SECRET: process.env.JWT_SECRET,
 });
 
 if (!parsedEnv.success) {
 	console.error(
-		"❌ Error en las variables de entorno:",
+		'❌ Error en las variables de entorno:',
 		JSON.stringify(parsedEnv.error, null, 2),
 	);
 

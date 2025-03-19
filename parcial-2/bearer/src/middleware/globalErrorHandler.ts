@@ -1,20 +1,17 @@
-import { ENV } from "@src/config/env";
-import type { Response } from "express";
+import { ENV } from '@src/config/env';
+import type { Response } from 'express';
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const handleCastErrorDB = (err: any) => {
 	const message = `Error al convertir tipo de dato ${err.path}: ${err.value}. Por favor, revise los datos proporcionados.`;
 	return new Error(message);
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const handleDuplicateFieldsDB = (_: any) => {
 	const message =
-		"El valor que se intenta ingresar ya existe en el sistema. Por favor, verifique los datos e intente nuevamente.";
+		'El valor que se intenta ingresar ya existe en el sistema. Por favor, verifique los datos e intente nuevamente.';
 	return new Error(message);
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const handleValidationErrorDB = (err: any) => {
 	const errors = Object.values(err.errors).map(
 		(el) =>
@@ -24,39 +21,34 @@ const handleValidationErrorDB = (err: any) => {
 				}
 			).message,
 	);
-	const message = `Datos proporcionados no válidos. ${errors.join(". ")}`;
+	const message = `Datos proporcionados no válidos. ${errors.join('. ')}`;
 	return new Error(message);
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const handleForeignKeyError = (_: any) => {
 	const message =
-		"No se puede completar esta acción porque este registro está vinculado a otro o hay una relación que no se pudo encontrar. Por favor, verifique las dependencias antes de continuar.";
+		'No se puede completar esta acción porque este registro está vinculado a otro o hay una relación que no se pudo encontrar. Por favor, verifique las dependencias antes de continuar.';
 	return new Error(message);
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const handleDataTypeError = (_: any) => {
 	const message =
-		"Tipo de dato inválido para el campo. Por favor, revise los datos proporcionados.";
+		'Tipo de dato inválido para el campo. Por favor, revise los datos proporcionados.';
 	return new Error(message);
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const handleConstraintError = (_: any) => {
 	const message =
-		"Violación de restricción. Por favor, revise los datos proporcionados.";
+		'Violación de restricción. Por favor, revise los datos proporcionados.';
 	return new Error(message);
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const handleDeadlockError = (_: any) => {
 	const message =
-		"Conflicto de transacción detectado. Por favor, intente nuevamente.";
+		'Conflicto de transacción detectado. Por favor, intente nuevamente.';
 	return new Error(message);
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const sendErrorDev = (err: any, res: Response) => {
 	console.error(err);
 
@@ -68,7 +60,6 @@ const sendErrorDev = (err: any, res: Response) => {
 	});
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const sendErrorProd = (err: any, res: Response) => {
 	if (err.isOperational) {
 		res.status(err.statusCode).json({
@@ -81,34 +72,33 @@ const sendErrorProd = (err: any, res: Response) => {
 		console.error(err);
 
 		res.status(500).json({
-			status: "error",
-			message: "Algo salió mal",
+			status: 'error',
+			message: 'Algo salió mal',
 		});
 	}
 };
 
 const globalErrorHandler = (
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	err: any,
 	_req: unknown,
 	res: Response,
 	_next: unknown,
 ) => {
 	err.statusCode = err.statusCode || 500;
-	err.status = err.status || "error";
+	err.status = err.status || 'error';
 
 	let customDBError: Error | undefined;
 
-	if (err.name === "CastError") customDBError = handleCastErrorDB(err);
-	if (err.name === "ValidationError")
+	if (err.name === 'CastError') customDBError = handleCastErrorDB(err);
+	if (err.name === 'ValidationError')
 		customDBError = handleValidationErrorDB(err);
-	if (err.code === "P2002") customDBError = handleDuplicateFieldsDB(err);
-	if (err.code === "P2003") customDBError = handleForeignKeyError(err);
-	if (err.code === "P2005") customDBError = handleDataTypeError(err);
-	if (err.code === "P2004") customDBError = handleConstraintError(err);
-	if (err.code === "P2034") customDBError = handleDeadlockError(err);
+	if (err.code === 'P2002') customDBError = handleDuplicateFieldsDB(err);
+	if (err.code === 'P2003') customDBError = handleForeignKeyError(err);
+	if (err.code === 'P2005') customDBError = handleDataTypeError(err);
+	if (err.code === 'P2004') customDBError = handleConstraintError(err);
+	if (err.code === 'P2034') customDBError = handleDeadlockError(err);
 
-	if (ENV.ENVIRONMENT === "development") {
+	if (ENV.ENVIRONMENT === 'development') {
 		sendErrorDev(customDBError ?? err, res);
 	} else {
 		sendErrorProd(customDBError ?? err, res);

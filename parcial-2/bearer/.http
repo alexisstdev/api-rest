@@ -1,0 +1,77 @@
+@baseUrl = http://localhost:3005
+@authToken = {{login.response.body.token}}
+
+### Register a new user
+# @name register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "newuser@example.com",
+  "password": "password123",
+  "firstName": "New",
+  "lastName": "User",
+  "username": "newuser"
+}
+
+### Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "newuser@example.com",
+  "password": "password123"
+}
+
+### Get user profile (authenticated)
+GET {{baseUrl}}/auth/profile
+Authorization: Bearer {{authToken}}
+
+### Create a new user (admin only)
+POST {{baseUrl}}/users
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "email": "another@example.com",
+  "username": "anotheruser",
+  "firstName": "Another",
+  "lastName": "User"
+}
+
+### Update a user (authenticated)
+PUT {{baseUrl}}/users/2
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "firstName": "Updated",
+  "lastName": "Name"
+}
+
+### Delete a user (admin only)
+DELETE {{baseUrl}}/users/3
+Authorization: Bearer {{authToken}}
+
+### Try accessing admin route as a regular user (should fail)
+# First login as a regular user, then use that token
+# @name loginRegular
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password"
+}
+
+### Try to delete a user as regular user (should fail)
+DELETE {{baseUrl}}/users/3
+Authorization: Bearer {{loginRegular.response.body.token}}
+
+### Check public API endpoint from index.js
+GET {{baseUrl}}/api/public
+
+### Check protected API endpoint from index.js
+GET {{baseUrl}}/api/protected
+Authorization: Bearer {{authToken}}
