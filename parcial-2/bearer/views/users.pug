@@ -1,0 +1,49 @@
+doctype html
+html
+  head
+    title Users List
+    style.
+      form {
+        margin-top: 20px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      .error {
+        color: red;
+        background-color: #ffeeee;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+      }
+  body
+    h1 Users
+
+    ul
+      each user in users
+        li #{user.firstName} #{user.lastName} (#{user.username})
