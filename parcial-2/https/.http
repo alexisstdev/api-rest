@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:3005
+@baseUrl = https://localhost:3005
 @authToken = {{login.response.body.token}}
 
 ### Register a new user
@@ -7,11 +7,11 @@ POST {{baseUrl}}/auth/register
 Content-Type: application/json
 
 {
-  "email": "newuser@example.com",
+  "email": "newuser3@example.com",
   "password": "password123",
   "firstName": "New",
   "lastName": "User",
-  "username": "newuser"
+  "username": "newuser3"
 }
 
 ### Login
@@ -20,7 +20,7 @@ POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "newuser@example.com",
+  "email": "newuser3@example.com",
   "password": "password123"
 }
 

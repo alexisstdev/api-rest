@@ -1,24 +1,34 @@
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-import { ENV } from '@src/config/env';
-import type { TokenPayload, UserWithoutPassword } from '@src/utils/authTypes';
-import type { User } from '@prisma/client';
+import type { User } from "@prisma/client";
+import type { TokenPayload, UserWithoutPassword } from "@src/utils/authTypes";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import fs from "node:fs";
+import path from "node:path";
+
+const PRIVATE_KEY = fs.readFileSync(
+	path.join(process.cwd(), "keys/private.pem"),
+);
+
+const PUBLIC_KEY = fs.readFileSync(path.join(process.cwd(), "keys/public.pem"));
 
 export const generateToken = (user: User): string => {
 	const payload: TokenPayload = {
 		id: user.id,
 		email: user.email,
-		role: user.role || 'user',
+		role: user.role || "user",
 	};
 
-	return jwt.sign(payload, ENV.JWT_SECRET, {
-		expiresIn: '1h',
+	return jwt.sign(payload, PRIVATE_KEY, {
+		algorithm: "RS256",
+		expiresIn: "1h",
 	});
 };
 
 export const verifyToken = (token: string): TokenPayload | null => {
 	try {
-		return jwt.verify(token, ENV.JWT_SECRET) as TokenPayload;
+		return jwt.verify(token, PUBLIC_KEY, {
+			algorithms: ["RS256"],
+		}) as TokenPayload;
 	} catch (error) {
 		return null;
 	}
