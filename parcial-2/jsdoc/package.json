@@ -1,0 +1,17 @@
+{
+	"name": "suma-module",
+	"version": "1.0.0",
+	"description": "Módulo simple para sumar números",
+	"main": "sum.js",
+	"type": "module",
+	"scripts": {
+		"docs": "jsdoc -c jsdoc.json",
+		"test": "node example.js"
+	},
+	"keywords": ["suma", "matemáticas", "jsdoc", "es modules"],
+	"author": "",
+	"license": "MIT",
+	"devDependencies": {
+		"docdash": "^2.0.2"
+	}
+}
