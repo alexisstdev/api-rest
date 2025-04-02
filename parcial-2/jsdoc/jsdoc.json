@@ -31,16 +31,5 @@
 	"markdown": {
 		"hardwrap": false,
 		"idInHeadings": true
-	},
-	"docdash": {
-		"static": false,
-		"sort": true,
-		"search": true,
-		"collapse": true,
-		"wrap": false,
-		"typedefs": true,
-		"navLevel": 3,
-		"removeQuotes": "none",
-		"scripts": []
 	}
 }
